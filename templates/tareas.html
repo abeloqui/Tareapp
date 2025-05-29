@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Tareas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <a href="{{ url_for('dashboard') }}" class="back-button" title="Volver al inicio">⬅️ Inicio</a>
+            <h1>Mis Tareas Pendientes</h1>
+        </header>
+
+        <div class="input-area">
+            <input type="text" id="taskInput" placeholder="Escribe o dicta tu tarea...">
+            <button id="speechBtn" class="icon-button speech-button" title="Dictar tarea">🎤</button>
+            <button id="addTaskBtn" class="action-button" title="Añadir tarea">Añadir Tarea</button>
+        </div>
+
+        <div id="taskList" class="item-list">
+            {% if tasks %}
+                {% for task in tasks %}
+                    <div class="task-item item-card {% if task.is_done %}done{% endif %}" data-id="{{ task.id }}">
+                        <span class="task-description item-description">{{ task.description }}</span>
+                        <div class="task-actions item-actions">
+                            <button class="speak-item icon-button" title="Escuchar tarea">🔊</button>
+                            <button class="toggle-done-btn icon-button" title="Marcar como hecha/pendiente">
+                                {% if task.is_done %}🔄{% else %}✔️{% endif %}
+                            </button>
+                            <button class="delete-item-btn icon-button" title="Eliminar tarea">🗑️</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p id="no-items-msg" class="empty-list-msg">No hay tareas pendientes. ¡Añade alguna!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script> <!-- JS General -->
+    <script src="{{ url_for('static', filename='tareas_script.js') }}"></script> <!-- JS específico para tareas -->
+</body>
+</html>

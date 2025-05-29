@@ -1,0 +1,9 @@
+{# templates/_macros.html #}
+{% macro format_date_macro(date_str) %}
+    {% if date_str %}
+        {# Asumimos que 'datetime' está disponible globalmente en Jinja desde app.py #}
+        {{ datetime.strptime(date_str, '%Y-%m-%d').strftime('%d/%m/%Y') }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endmacro %}

@@ -1,0 +1,83 @@
+{% import "_macros.html" as utils %} {# <--- IMPORTANTE: Esta línea al principio #}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Compras</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <a href="{{ url_for('dashboard') }}" class="back-button" title="Volver al inicio">⬅️ Inicio</a>
+            <h1>Registro de Compras/Gastos</h1>
+        </header>
+
+        <form id="addGastoForm" class="input-form">
+            <div class="form-group">
+                <label for="gastoDescription">¿Qué compraste/gastaste?</label>
+                <div class="input-with-speech">
+                    <input type="text" id="gastoDescription" name="description" required placeholder="Ej: Pan y leche, Factura de luz...">
+                    <button type="button" id="speechBtnGasto" class="icon-button speech-button" title="Dictar descripción">🎤</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gastoAmount">¿Cuánto costó? (Opcional)</label>
+                <input type="number" id="gastoAmount" name="amount" step="0.01" placeholder="Ej: 15.50">
+            </div>
+            <div class="form-group">
+                <label for="gastoCategory">Categoría (Opcional)</label>
+                <select id="gastoCategory" name="category">
+                    <option value="">-- Selecciona una categoría --</option>
+                    {% for category_item in categories %}
+                    <option value="{{ category_item }}">{{ category_item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="gastoDate">Fecha de la compra</label>
+                <input type="date" id="gastoDate" name="gasto_date" value="{{ today_iso() }}">
+            </div>
+            <button type="submit" id="addGastoBtn" class="action-button">Añadir Gasto</button>
+        </form>
+
+        <div id="gastoList" class="item-list">
+            <h2>Historial de Gastos</h2>
+            {% if gastos %}
+                {% for gasto in gastos %}
+                    <div class="gasto-item item-card" data-id="{{ gasto.id }}">
+                        <div class="item-info">
+                            <strong class="item-description">{{ gasto.description }}</strong>
+                            {% if gasto.amount %}
+                                <span class="gasto-amount">Monto: {{ "%.2f"|format(gasto.amount) }} €/$</span>
+                            {% endif %}
+                            {% if gasto.category %}
+                                <span class="gasto-category">Categoría: {{ gasto.category }}</span>
+                            {% endif %}
+                            {# IMPORTANTE: Llamada a la macro con el alias 'utils' #}
+                            <span class="gasto-date">Fecha: {{ utils.format_date_macro(gasto.date_created) }}</span>
+                        </div>
+                        <div class="item-actions">
+                            <button class="speak-item icon-button" title="Escuchar gasto">🔊</button>
+                            <button class="delete-item-btn icon-button" title="Eliminar gasto">🗑️</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p id="no-items-msg" class="empty-list-msg">Aún no has registrado ningún gasto.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    {# La definición de la macro YA NO ESTÁ AQUÍ, se movió a _macros.html #}
+
+    <script>
+        const GASTOS_ADD_URL = "{{ url_for('add_gasto_route') }}";
+        const GASTOS_DELETE_URL_BASE = "{{ url_for('compras_page') }}delete/";
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='compras_script.js') }}"></script>
+</body>
+</html>

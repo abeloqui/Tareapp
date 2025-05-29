@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente de Suegra</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Iconos (ejemplo con Font Awesome, necesitarás añadir el CDN si lo usas) -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Bienvenida</h1>
+            <p class="current-date" id="currentDate"></p>
+        </header>
+
+        <nav class="dashboard-nav">
+            <a href="{{ url_for('tareas_page') }}" class="nav-button">
+                <span class="nav-icon">📝</span> <!-- Reemplazar con <img> o FontAwesome si prefieres -->
+                <span>Mis Tareas</span>
+            </a>
+            <a href="{{ url_for('compras_page') }}" class="nav-button">
+                <span class="nav-icon">🛒</span>
+                <span>Mis Compras</span>
+            </a>
+            <a href="{{ url_for('medicamentos_page') }}" class="nav-button">
+                <span class="nav-icon">💊</span>
+                <span>Mis Medicamentos</span>
+            </a>
+                        <a href="{{ url_for('turnos_page') }}" class="nav-button">
+                <span class="nav-icon">🗓️</span> <!-- O 👨‍⚕️ -->
+                <span>Mis Turnos</span>
+            </a>
+            <!--
+            <a href="#" class="nav-button">
+                <span class="nav-icon">📞</span>
+                <span>Contactos</span>
+            </a>
+            <a href="#" class="nav-button">
+                <span class="nav-icon">🔄</span>
+                <span>Mis Rutinas</span>
+            </a>
+            -->
+        </nav>
+    </div>
+    <script>
+        // Mostrar fecha actual
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('es-ES', options);
+    </script>
+</body>
+</html>

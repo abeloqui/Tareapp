@@ -1,0 +1,305 @@
+/* --- Reseteo Básico y Variables --- */
+:root {
+    --primary-color: #76c7c0; /* Turquesa claro */
+    --secondary-color: #5cb85c; /* Verde */
+    --accent-color: #f0ad4e; /* Naranja */
+    --danger-color: #d9534f; /* Rojo */
+    --light-bg: #f4f7f6;
+    --dark-text: #2c3e50;
+    --medium-text: #333;
+    --light-text: #f8f9fa;
+    --card-bg: #ffffff;
+    --border-color: #ddd;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-size-base: 1.1em; /* Aumentado ligeramente */
+    --font-size-large: 1.5em;
+    --font-size-xl: 2em;
+    --font-size-xxl: 2.5em;
+    --button-padding: 12px 18px;
+    --card-padding: 20px;
+    --border-radius: 8px;
+}
+
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0; /* El padding lo controlará el container */
+    background-color: var(--light-bg);
+    color: var(--medium-text);
+    line-height: 1.6;
+    font-size: var(--font-size-base);
+}
+
+/* --- Contenedores y Layout --- */
+.container { /* Para páginas de módulo (Tareas, Compras) */
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: var(--card-bg);
+    padding: var(--card-padding);
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-container { /* Para la página de inicio */
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.page-header h1 {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0; /* Quitamos margen del h1 para que el flex lo centre bien */
+    font-size: var(--font-size-xl);
+    color: var(--dark-text);
+}
+
+.back-button {
+    font-size: var(--font-size-large);
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    transition: background-color 0.2s;
+}
+.back-button:hover {
+    background-color: #e0e0e0;
+}
+
+
+/* --- Dashboard Específico --- */
+.dashboard-header {
+    margin-bottom: 40px;
+}
+.dashboard-header h1 {
+    font-size: var(--font-size-xxl);
+    color: var(--dark-text);
+    margin-bottom: 5px;
+}
+.current-date {
+    font-size: var(--font-size-base);
+    color: var(--medium-text);
+}
+
+.dashboard-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive */
+    gap: 25px;
+}
+
+.nav-button {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-size: var(--font-size-large);
+    display: flex;
+    flex-direction: column; /* Icono arriba, texto abajo */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-out, background-color 0.2s;
+    min-height: 150px; /* Para que tengan un buen tamaño táctil */
+}
+.nav-button:hover {
+    background-color: #62b1aa; /* Un poco más oscuro */
+    transform: translateY(-5px);
+}
+.nav-button .nav-icon {
+    font-size: 2.5em; /* Iconos grandes */
+    margin-bottom: 10px;
+}
+
+/* --- Elementos de Formulario y Entrada --- */
+.input-area, .input-form { /* Usado en Tareas y Compras */
+    margin-bottom: 25px;
+}
+.input-area { /* Para Tareas (inline) */
+    display: flex;
+    gap: 10px;
+}
+.input-form .form-group { /* Para Compras (bloques) */
+    margin-bottom: 20px;
+}
+.input-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--dark-text);
+    font-size: 1.1em; /* Un poco más grande */
+}
+
+.input-with-speech {
+    display: flex;
+    gap: 10px;
+}
+.input-with-speech input[type="text"] {
+    flex-grow: 1;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1.1em; /* Más grande */
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-sizing: border-box; /* Importante para que el padding no aumente el width */
+    outline: none;
+    transition: border-color 0.3s;
+}
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: var(--primary-color);
+}
+
+/* Botones Generales */
+button, .action-button, .icon-button {
+    padding: var(--button-padding);
+    font-size: 1em; /* Relativo al font-size base */
+    cursor: pointer;
+    border: none;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s, transform 0.1s;
+    color: var(--light-text);
+    font-weight: bold;
+}
+
+.action-button { /* Botón principal de acción del formulario */
+    background-color: var(--secondary-color);
+    display: block; /* Para que ocupe todo el ancho en el form de compras */
+    width: 100%;
+    font-size: 1.2em;
+}
+.action-button:hover {
+    background-color: #4cae4c;
+}
+
+.icon-button {
+    background-color: var(--primary-color);
+    min-width: 50px;
+    display: inline-flex; /* Para que se alinee bien con inputs */
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em; /* Iconos un poco más grandes */
+}
+.icon-button:hover {
+    background-color: #62b1aa;
+}
+.icon-button:active {
+    transform: scale(0.95);
+}
+
+.speech-button { /* Específico para el botón de micrófono */
+    background-color: var(--accent-color);
+}
+.speech-button:hover {
+    background-color: #ec971f;
+}
+.speech-button.listening {
+    background-color: var(--danger-color);
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(217, 83, 79, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0); }
+}
+
+
+/* --- Listas de Items (Tareas, Compras) --- */
+.item-list {
+    margin-top: 30px;
+}
+.item-list h2 { /* Para el "Historial de Gastos" */
+    font-size: var(--font-size-large);
+    color: var(--dark-text);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.item-card { /* Contenedor para cada Tarea o Gasto */
+    background-color: var(--card-bg);
+    padding: var(--card-padding);
+    margin-bottom: 15px;
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em; /* Un poco más grande */
+    transition: box-shadow 0.2s;
+}
+.item-card:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+}
+
+.item-card.done .item-description { /* Para tareas completadas */
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.item-description {
+    flex-grow: 1;
+    word-break: break-word;
+}
+
+.item-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 15px;
+}
+.item-actions .icon-button {
+    font-size: 1em; /* Iconos un poco más pequeños en la lista */
+    padding: 8px 10px;
+}
+.item-actions .toggle-done-btn { background-color: #5bc0de; }
+.item-actions .toggle-done-btn:hover { background-color: #46b8da; }
+.item-actions .delete-item-btn { background-color: var(--danger-color); }
+.item-actions .delete-item-btn:hover { background-color: #c9302c; }
+
+/* Estilos específicos para Gastos */
+.gasto-item .item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-grow: 1;
+}
+.gasto-item .item-description {
+    font-weight: bold;
+}
+.gasto-amount, .gasto-category, .gasto-date {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.empty-list-msg { /* Para "No hay tareas/gastos" */
+    text-align: center;
+    color: #777;
+    font-size: 1.2em;
+    padding: 30px 20px;
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius);
+}
+
+.content-placeholder { /* Para módulos en construcción */
+    text-align: center;
+    padding: 40px;
+    font-size: 1.3em;
+    color: #666;
+}

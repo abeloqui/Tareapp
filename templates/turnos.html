@@ -1,0 +1,114 @@
+{% import "_macros.html" as utils %} {# Asumiendo que _macros.html existe y tiene format_date_macro #}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Turnos Médicos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .turno-item.realizado {
+            background-color: #e6ffe6; /* Verde claro */
+            opacity: 0.7;
+        }
+        .turno-item.cancelado {
+            background-color: #ffeeee; /* Rojo claro */
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        .turno-date-time strong {
+            font-size: 1.2em; /* Hacer fecha y hora más prominentes */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <a href="{{ url_for('dashboard') }}" class="back-button" title="Volver al inicio">⬅️ Inicio</a>
+            <h1>Mis Turnos Médicos</h1>
+        </header>
+
+        <section class="proximos-turnos item-list">
+            <h2>Próximos Turnos</h2>
+            {% if proximos_turnos %}
+                {% for turno in proximos_turnos %}
+                <div class="turno-item item-card" data-id="{{ turno.id }}" data-status="{{ turno.status }}">
+                    <div class="item-info">
+                        <strong class="item-description turno-description">👨‍⚕️ {{ turno.description }}</strong>
+                        <span class="turno-date-time">
+                            Fecha: <strong>{{ utils.format_date_macro(turno.date) }}</strong>
+                            a las <strong>{{ turno.time }}</strong>
+                        </span>
+                        {% if turno.address %}
+                            <small class="turno-address">Lugar: {{ turno.address }}</small>
+                        {% endif %}
+                        {% if turno.notes %}
+                            <small class="turno-notes">Notas: {{ turno.notes }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="item-actions">
+                        <button class="speak-item icon-button" title="Escuchar turno">🔊</button>
+                        <button class="mark-status-btn action-button" data-new-status="realizado" title="Marcar como Realizado">✔️ Realizado</button>
+                        <button class="mark-status-btn action-button" data-new-status="cancelado" style="background-color: var(--danger-color);" title="Marcar como Cancelado">❌ Cancelar</button>
+                        <!-- Podrías añadir un botón de eliminar si quieres borrarlo completamente -->
+                        <!-- <button class="delete-turno-btn icon-button">🗑️</button> -->
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-list-msg">No tienes próximos turnos médicos programados.</p>
+            {% endif %}
+        </section>
+
+        <hr style="margin: 40px 0;">
+
+        <section class="form-section anadir-turno">
+            <h2>Añadir Nuevo Turno Médico</h2>
+            <form id="addTurnoForm" action="{{ url_for('add_turno_route') }}" method="POST" class="input-form">
+                <div class="form-group">
+                    <label for="turnoDescription">Especialidad / Médico / Lugar:</label>
+                     <div class="input-with-speech">
+                        <input type="text" id="turnoDescription" name="description" required>
+                        <button type="button" id="speechBtnTurnoDesc" class="icon-button speech-button" title="Dictar descripción">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="turnoDate">Fecha del Turno:</label>
+                    <input type="date" id="turnoDate" name="turno_date" value="{{ today_iso() }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="turnoTime">Hora del Turno:</label>
+                    <input type="time" id="turnoTime" name="turno_time" required>
+                </div>
+                <div class="form-group">
+                    <label for="turnoAddress">Dirección (Opcional):</label>
+                    <div class="input-with-speech">
+                        <input type="text" id="turnoAddress" name="address">
+                        <button type="button" id="speechBtnTurnoAddr" class="icon-button speech-button" title="Dictar dirección">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="turnoNotes">Notas Adicionales (Opcional):</label>
+                    <div class="input-with-speech">
+                        <textarea id="turnoNotes" name="notes" rows="3"></textarea>
+                        <button type="button" id="speechBtnTurnoNotes" class="icon-button speech-button" title="Dictar notas">🎤</button>
+                    </div>
+                </div>
+                <button type="submit" class="action-button">Guardar Turno</button>
+            </form>
+        </section>
+
+        <!-- Aquí podría ir la sección de Historial de Turnos si la implementas -->
+
+    </div>
+
+    <script>
+        // URLs para JS
+        const TURNOS_UPDATE_STATUS_URL_BASE = "{{ url_for('turnos_page') }}update_status/"; // /turnos/update_status/ID
+        const TURNOS_DELETE_URL_BASE = "{{ url_for('turnos_page') }}delete/"; // Si lo implementas
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='turnos_script.js') }}"></script>
+</body>
+</html>
